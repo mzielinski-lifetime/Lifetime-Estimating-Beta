@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Lifetime Estimating Beta</title>
+  <style>
+    :root {
+      --primary: #2563eb;
+      --bg: #f8fafc;
+      --card-bg: #ffffff;
+      --text: #1e293b;
+    }
+    body {
+      font-family: system-ui, -apple-system, sans-serif;
+      background-color: var(--bg);
+      color: var(--text);
+      display: flex;
+      justify-content: center;
+      padding: 2rem;
+      margin: 0;
+    }
+    .card {
+      background: var(--card-bg);
+      padding: 2rem;
+      border-radius: 12px;
+      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+      max-width: 400px;
+      width: 100%;
+    }
+    h1 {
+      font-size: 1.5rem;
+      margin-bottom: 1.5rem;
+    }
+    .form-group {
+      margin-bottom: 1rem;
+    }
+    label {
+      display: block;
+      margin-bottom: 0.5rem;
+      font-size: 0.9rem;
+      font-weight: 500;
+    }
+    input {
+      width: 100%;
+      padding: 0.5rem;
+      border: 1px solid #cbd5e1;
+      border-radius: 6px;
+      box-sizing: border-box;
+    }
+    button {
+      width: 100%;
+      background-color: var(--primary);
+      color: white;
+      border: none;
+      padding: 0.75rem;
+      border-radius: 6px;
+      font-weight: 600;
+      cursor: pointer;
+      margin-top: 1rem;
+    }
+    button:hover {
+      background-color: #1d4ed8;
+    }
+    .result {
+      margin-top: 1.5rem;
+      padding: 1rem;
+      background: #eff6ff;
+      border-radius: 6px;
+      text-align: center;
+      display: none;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="card">
+    <h1>Lifetime Estimator</h1>
+    <div class="form-group">
+      <label for="age">Current Age</label>
+      <input type="number" id="age" placeholder="e.g. 30" min="0" max="120">
+    </div>
+    <div class="form-group">
+      <label for="target">Target Life Expectancy (Years)</label>
+      <input type="number" id="target" value="85" min="1" max="120">
+    </div>
+    <button onclick="calculate()">Calculate Remaining Time</button>
+
+    <div class="result" id="result">
+      <h3>Estimated Time Remaining:</h3>
+      <p id="years-left"></p>
+      <p id="days-left"></p>
+    </div>
+  </div>
+
+  <script>
+    function calculate() {
+      const age = parseFloat(document.getElementById('age').value);
+      const target = parseFloat(document.getElementById('target').value);
+      const resultDiv = document.getElementById('result');
+
+      if (isNaN(age) || age < 0) {
+        alert('Please enter a valid age.');
+        return;
+      }
+
+      const yearsRemaining = target - age;
+      const daysRemaining = Math.max(0, yearsRemaining * 365.25);
+
+      document.getElementById('years-left').textContent = yearsRemaining > 0 
+        ? `${yearsRemaining.toFixed(1)} years` 
+        : 'Target age reached or exceeded';
+      
+      document.getElementById('days-left').textContent = yearsRemaining > 0 
+        ? `(~${Math.round(daysRemaining).toLocaleString()} days)` 
+        : '';
+
+      resultDiv.style.display = 'block';
+    }
+  </script>
+
+</body>
+</html>
